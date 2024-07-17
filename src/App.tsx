@@ -83,13 +83,48 @@ function App() {
   };
 
   const forecastData = [
-    { day: 'Monday', temperature: 29, description: 'Rain' },
-    { day: 'Tuesday', temperature: 27, description: 'Sunny' },
-    { day: 'Wednesday', temperature: 26, description: 'Cloudy' },
-    { day: 'Thursday', temperature: 24, description: 'Rain' },
-    { day: 'Friday', temperature: 22, description: 'Cloudy' },
-    { day: 'Saturday', temperature: 25, description: 'Sunny' },
-    { day: 'Sunday', temperature: 28, description: 'Partly Cloudy' },
+    {
+      day: 'Friday',
+      temperature: 22,
+      description: 'Cloudy',
+      icon: 'http://openweathermap.org/img/wn/04d@2x.png',
+    },
+    {
+      day: 'Saturday',
+      temperature: 25,
+      description: 'Sunny',
+      icon: 'http://openweathermap.org/img/wn/01d@2x.png',
+    },
+    {
+      day: 'Sunday',
+      temperature: 28,
+      description: 'Partly Cloudy',
+      icon: 'http://openweathermap.org/img/wn/03d@2x.png',
+    },
+    {
+      day: 'Monday',
+      temperature: 29,
+      description: 'Rain',
+      icon: 'http://openweathermap.org/img/wn/10d@2x.png',
+    },
+    {
+      day: 'Tuesday',
+      temperature: 27,
+      description: 'Sunny',
+      icon: 'http://openweathermap.org/img/wn/01d@2x.png',
+    },
+    {
+      day: 'Wednesday',
+      temperature: 26,
+      description: 'Cloudy',
+      icon: 'http://openweathermap.org/img/wn/04d@2x.png',
+    },
+    {
+      day: 'Thursday',
+      temperature: 24,
+      description: 'Rain',
+      icon: 'http://openweathermap.org/img/wn/10d@2x.png',
+    },
   ];
 
   const weatherDetails = {
@@ -132,8 +167,8 @@ function App() {
         </div>
       )}
       {!loading && !error && data && (
-        <div className='flex flex-col items-center justify-center p-2'>
-          <div className='flex flex-col sm:flex-row items-center justify-center sm:gap-2 w-[90vw] sm:w-[80vw] p-16 border-b-2 border-black border-opacity-20 '>
+        <div className='flex flex-col items-center justify-center p-8'>
+          <div className='flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-2 w-[90vw] sm:w-[80vw] p-8 border-b-2 border-black border-opacity-20'>
             {data && <CurrentWeather data={data} />}
             {data && <WeatherDetails details={weatherDetails} />}
           </div>

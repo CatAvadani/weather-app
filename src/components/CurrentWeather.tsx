@@ -1,9 +1,16 @@
 const CurrentWeather = ({ data }: { data: any }) => {
+  const weatherIconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
   return (
     <div className='flex flex-col items-end justify-center bg-black bg-opacity-10 rounded-l-full p-16 shadow-lg w-1/2 h-52'>
       <div className='text-5xl font-semibold'>
         {Math.round(data.main.temp)}°C
       </div>
+      <img
+        src={weatherIconUrl}
+        alt={data.weather[0].description}
+        className='w-10 h-10'
+      />
       <div className='text-xl'>{data.weather[0].description}</div>
       <div className='flex mt-4'>
         <div className='mr-4'>
