@@ -1,7 +1,9 @@
 const CurrentWeather = ({ data }: { data: any }) => {
   return (
-    <div className='flex flex-col items-center bg-black bg-opacity-20 rounded-lg p-8 shadow-lg'>
-      <div className='text-6xl font-bold'>{Math.round(data.main.temp)}°C</div>
+    <div className='flex flex-col items-end justify-center bg-black bg-opacity-10 rounded-l-full p-16 shadow-lg w-1/2 h-52'>
+      <div className='text-5xl font-semibold'>
+        {Math.round(data.main.temp)}°C
+      </div>
       <div className='text-xl'>{data.weather[0].description}</div>
       <div className='flex mt-4'>
         <div className='mr-4'>

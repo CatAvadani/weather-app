@@ -83,13 +83,13 @@ function App() {
   };
 
   const forecastData = [
-    { day: 'Friday', temperature: 22, description: 'Cloudy' },
-    { day: 'Saturday', temperature: 25, description: 'Sunny' },
-    { day: 'Sunday', temperature: 28, description: 'Partly Cloudy' },
     { day: 'Monday', temperature: 29, description: 'Rain' },
     { day: 'Tuesday', temperature: 27, description: 'Sunny' },
     { day: 'Wednesday', temperature: 26, description: 'Cloudy' },
     { day: 'Thursday', temperature: 24, description: 'Rain' },
+    { day: 'Friday', temperature: 22, description: 'Cloudy' },
+    { day: 'Saturday', temperature: 25, description: 'Sunny' },
+    { day: 'Sunday', temperature: 28, description: 'Partly Cloudy' },
   ];
 
   const weatherDetails = {
@@ -104,15 +104,15 @@ function App() {
       className='min-h-screen bg-cover bg-center text-white'
       style={{ backgroundImage: `url('/app-background.jpg')` }}
     >
-      <nav className=' sm:flex h-6 w-[90vw] justify-between items-center mx-auto mb-52 sm:mb-8 pt-10'>
-        <div className=' flex justify-center items-center  p-4'>
+      <nav className='sm:flex h-6 w-[90vw] justify-between items-center mx-auto mb-52 sm:mb-8 pt-10'>
+        <div className='flex justify-center items-center p-4'>
           <h1 className='text-center text-lg sm:text-2xl font-bold p-4'>
             Weather Watch
           </h1>
-          <MapPinIcon className=' w-6 h-6  text-yellow-500' />
-          <h1 className=' text-lg sm:text-xl  p-4 text-stone-300'>
+          <MapPinIcon className='w-6 h-6 text-yellow-500' />
+          <h1 className='text-lg sm:text-xl p-4 text-stone-300'>
             Weather in{' '}
-            <span className=' sm:font-bold text-white'>
+            <span className='sm:font-bold text-white'>
               {' '}
               {data?.name}, {data?.sys.country}
             </span>
@@ -122,7 +122,7 @@ function App() {
       </nav>
 
       {loading && (
-        <div className='flex justify-center items-center '>
+        <div className='flex justify-center items-center'>
           <p>Loading...</p>
         </div>
       )}
@@ -132,11 +132,8 @@ function App() {
         </div>
       )}
       {!loading && !error && data && (
-        <div className='flex flex-col items-center p-8'>
-          <div
-            className='flex items-center justify-center gap-10 sm:gap-16 sm:flex-row flex-col w-[90vw] sm:w-[80vw]  p-8 border-b-2 border-black border-opacity-20 
-          '
-          >
+        <div className='flex flex-col items-center justify-center p-2'>
+          <div className='flex flex-col sm:flex-row items-center justify-center sm:gap-2 w-[90vw] sm:w-[80vw] p-16 border-b-2 border-black border-opacity-20 '>
             {data && <CurrentWeather data={data} />}
             {data && <WeatherDetails details={weatherDetails} />}
           </div>
