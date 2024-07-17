@@ -1,5 +1,6 @@
 import { MapPinIcon } from '@heroicons/react/16/solid';
 import { useEffect, useState } from 'react';
+import SearchWeatherInput from './components/SearchWeatherInput';
 import { WeatherData } from './data/interfaces';
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
@@ -58,15 +59,35 @@ function App() {
     getWeatherData();
   }, [coords]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const handleSearch = async (query: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${API_KEY}`
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch weather data');
+      }
+
+      const resData: WeatherData = await response.json();
+      setData(resData);
+      setLoading(false);
+    } catch (err) {
+      setError((err as Error).message);
+      setLoading(false);
+    }
+  };
+
+  // if (loading) return <h1>Loading...</h1>;
+  // if (error) return <h1>Error: {error}</h1>;
 
   return (
     <div
       className='min-h-screen bg-cover bg-center text-white'
       style={{ backgroundImage: `url('/app-background.jpg')` }}
     >
-      <nav className=' flex h-6 w-[90vw] justify-between items-center mx-auto mb-8 pt-10'>
+      <nav className=' sm:flex h-6 w-[90vw] justify-between items-center mx-auto mb-8 pt-10'>
         <div className=' flex justify-center items-center  p-4'>
           <h1 className='text-center text-2xl font-bold p-4'>Weather Watch</h1>
           <MapPinIcon className=' w-6 h-6  text-yellow-500' />
@@ -78,32 +99,28 @@ function App() {
             </span>
           </h1>
         </div>
-        <form className='flex justify-center items-center '>
-          <input
-            type='text'
-            placeholder='Enter city name'
-            className='py-2 px-6 rounded-l-full'
-          />
-          <button
-            type='submit'
-            className='py-2 px-6 bg-yellow-500 text-black rounded-r-full'
-          >
-            Get Weather
-          </button>
-        </form>
+        <SearchWeatherInput onSearch={handleSearch} />
       </nav>
-
-      {data && (
+      {loading && (
+        <div className='flex justify-center items-center '>
+          <p>Loading...</p>
+        </div>
+      )}
+      {error && (
+        <div className='flex justify-center items-center'>
+          <p>Error: {error}</p>
+        </div>
+      )}
+      {!loading && !error && data && (
         <div className=' max-w-[90vw] p-8 m-auto'>
-          <p>Temperature: {data.main.temp}°C</p>
-          <p>Feels Like: {data.main.feels_like}°C</p>
+          <p>Temperature: {Math.round(data.main.temp)}°C</p>
+          <p>Feels Like: {Math.round(data.main.feels_like)}°C</p>
           <p>Humidity: {data.main.humidity}%</p>
           <p>Pressure: {data.main.pressure} hPa</p>
           <p>Wind Speed: {data.wind.speed} m/s</p>
           <p>Weather: {data.weather[0].description}</p>
           <p>
-            Sunrise:
-            {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}
+            Sunrise: {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}
           </p>
           <p>Sunset: {new Date(data.sys.sunset * 1000).toLocaleTimeString()}</p>
         </div>
