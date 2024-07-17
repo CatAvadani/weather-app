@@ -26,7 +26,7 @@ function App() {
           });
         },
         (err) => {
-          setError(`Geolocation not supported or permission denied.`);
+          setError(`Geolocation not supported or permission denied.${err}`);
           setLoading(false);
         }
       );
