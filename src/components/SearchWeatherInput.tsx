@@ -10,6 +10,7 @@ export default function SearchWeatherInput({ onSearch }: SearchWeatherProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch(query);
+    setQuery('');
   };
 
   return (
@@ -18,12 +19,12 @@ export default function SearchWeatherInput({ onSearch }: SearchWeatherProps) {
         type='text'
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder='Enter city name'
-        className='py-2 px-6 rounded-l-full text-black'
+        placeholder='Enter city'
+        className='py-2 px-2 sm:px-6 rounded-l-full text-black'
       />
       <button
         type='submit'
-        className='py-2 px-6 bg-yellow-500 text-white rounded-r-full'
+        className='py-2 px-2 sm:px-6 bg-yellow-500 text-white rounded-r-full'
       >
         Get Weather
       </button>

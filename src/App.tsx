@@ -1,6 +1,9 @@
 import { MapPinIcon } from '@heroicons/react/16/solid';
 import { useEffect, useState } from 'react';
+import CurrentWeather from './components/CurrentWeather';
+import Forecast from './components/Forecast';
 import SearchWeatherInput from './components/SearchWeatherInput';
+import WeatherDetails from './components/WeatherDetails';
 import { WeatherData } from './data/interfaces';
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
@@ -79,21 +82,37 @@ function App() {
     }
   };
 
-  // if (loading) return <h1>Loading...</h1>;
-  // if (error) return <h1>Error: {error}</h1>;
+  const forecastData = [
+    { day: 'Friday', temperature: 22, description: 'Cloudy' },
+    { day: 'Saturday', temperature: 25, description: 'Sunny' },
+    { day: 'Sunday', temperature: 28, description: 'Partly Cloudy' },
+    { day: 'Monday', temperature: 29, description: 'Rain' },
+    { day: 'Tuesday', temperature: 27, description: 'Sunny' },
+    { day: 'Wednesday', temperature: 26, description: 'Cloudy' },
+    { day: 'Thursday', temperature: 24, description: 'Rain' },
+  ];
+
+  const weatherDetails = {
+    windSpeed: data?.wind.speed,
+    humidity: data?.main.humidity,
+    pressure: data?.main.pressure,
+    precipitation: 2,
+  };
 
   return (
     <div
       className='min-h-screen bg-cover bg-center text-white'
       style={{ backgroundImage: `url('/app-background.jpg')` }}
     >
-      <nav className=' sm:flex h-6 w-[90vw] justify-between items-center mx-auto mb-8 pt-10'>
+      <nav className=' sm:flex h-6 w-[90vw] justify-between items-center mx-auto mb-52 sm:mb-8 pt-10'>
         <div className=' flex justify-center items-center  p-4'>
-          <h1 className='text-center text-2xl font-bold p-4'>Weather Watch</h1>
+          <h1 className='text-center text-lg sm:text-2xl font-bold p-4'>
+            Weather Watch
+          </h1>
           <MapPinIcon className=' w-6 h-6  text-yellow-500' />
-          <h1 className=' text-xl  p-4 text-stone-300'>
+          <h1 className=' text-lg sm:text-xl  p-4 text-stone-300'>
             Weather in{' '}
-            <span className=' font-bold text-white'>
+            <span className=' sm:font-bold text-white'>
               {' '}
               {data?.name}, {data?.sys.country}
             </span>
@@ -101,6 +120,7 @@ function App() {
         </div>
         <SearchWeatherInput onSearch={handleSearch} />
       </nav>
+
       {loading && (
         <div className='flex justify-center items-center '>
           <p>Loading...</p>
@@ -112,17 +132,15 @@ function App() {
         </div>
       )}
       {!loading && !error && data && (
-        <div className=' max-w-[90vw] p-8 m-auto'>
-          <p>Temperature: {Math.round(data.main.temp)}°C</p>
-          <p>Feels Like: {Math.round(data.main.feels_like)}°C</p>
-          <p>Humidity: {data.main.humidity}%</p>
-          <p>Pressure: {data.main.pressure} hPa</p>
-          <p>Wind Speed: {data.wind.speed} m/s</p>
-          <p>Weather: {data.weather[0].description}</p>
-          <p>
-            Sunrise: {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}
-          </p>
-          <p>Sunset: {new Date(data.sys.sunset * 1000).toLocaleTimeString()}</p>
+        <div className='flex flex-col items-center p-8'>
+          <div
+            className='flex items-center justify-center gap-10 sm:gap-16 sm:flex-row flex-col w-[90vw] sm:w-[80vw]  p-8 border-b-2 border-black border-opacity-20 
+          '
+          >
+            {data && <CurrentWeather data={data} />}
+            {data && <WeatherDetails details={weatherDetails} />}
+          </div>
+          <Forecast forecast={forecastData} />
         </div>
       )}
     </div>
