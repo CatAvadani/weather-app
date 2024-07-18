@@ -1,52 +1,66 @@
-interface Weather {
+export interface Weather {
   id: number;
   main: string;
   description: string;
   icon: string;
 }
 
-interface Main {
+export interface Main {
   temp: number;
   feels_like: number;
   temp_min: number;
   temp_max: number;
   pressure: number;
   humidity: number;
-  sea_level: number;
-  grnd_level: number;
 }
 
-interface Wind {
+export interface Wind {
   speed: number;
-  deg: number;
-  gust: number;
 }
 
-interface Clouds {
-  all: number;
-}
-
-interface Sys {
+export interface Sys {
   country: string;
   sunrise: number;
   sunset: number;
 }
 
 export interface WeatherData {
-  coord: {
-    lon: number;
-    lat: number;
-  };
   weather: Weather[];
-  base: string;
   main: Main;
-  visibility: number;
   wind: Wind;
-  clouds: Clouds;
-  dt: number;
   sys: Sys;
-  timezone: number;
-  id: number;
   name: string;
-  cod: number;
+  coord: {
+    lat: number;
+    lon: number;
+  };
+}
+
+export interface ForecastData {
+  dt: number;
+  main: Main;
+  weather: Weather[];
+  clouds: {
+    all: number;
+  };
+  wind: Wind;
+  visibility: number;
+  pop: number; // Probability of precipitation
+  rain?: {
+    '3h': number;
+  };
+  snow?: {
+    '3h': number;
+  };
+  sys: {
+    pod: string;
+  };
+  dt_txt: string;
+}
+
+export interface DailyForecast {
+  date: string;
+  minTemp: number;
+  maxTemp: number;
+  weather: Weather[];
 }

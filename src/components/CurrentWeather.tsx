@@ -1,8 +1,10 @@
-const CurrentWeather = ({ data }: { data: any }) => {
+import { WeatherData } from '../data/interfaces';
+
+const CurrentWeather = ({ data }: { data: WeatherData }) => {
   const weatherIconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
   return (
-    <div className='flex flex-col items-end justify-center bg-black bg-opacity-10 rounded-l-full p-16 shadow-lg w-1/2 h-52'>
+    <div className='flex flex-col items-end justify-center bg-black bg-opacity-10 rounded-l-full p-16 pr-8 shadow-lg w-1/2 h-52'>
       <div className='text-5xl font-semibold'>
         {Math.round(data.main.temp)}°C
       </div>
@@ -13,14 +15,14 @@ const CurrentWeather = ({ data }: { data: any }) => {
       />
       <div className='text-xl'>{data.weather[0].description}</div>
       <div className='flex mt-4'>
-        <div className='mr-4'>
+        <div className='mr-4 '>
           <p>
             Sunrise: {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}
           </p>
           <p>Sunset: {new Date(data.sys.sunset * 1000).toLocaleTimeString()}</p>
         </div>
         <div>
-          <p>Feels like: {Math.round(data.main.feels_like)}°C</p>
+          <p>RealFeel: {Math.round(data.main.feels_like)}°C</p>
           <p>Humidity: {data.main.humidity}%</p>
         </div>
       </div>
