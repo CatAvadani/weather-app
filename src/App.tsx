@@ -4,7 +4,7 @@ import CurrentWeather from './components/CurrentWeather';
 import Forecast from './components/Forecast';
 import SearchWeatherInput from './components/SearchWeatherInput';
 import WeatherDetails from './components/WeatherDetails';
-import { WeatherData } from './data/interfaces';
+import { DailyForecast, ForecastData, WeatherData } from './data/interfaces';
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -13,6 +13,9 @@ function App() {
     null
   );
   const [data, setData] = useState<WeatherData | null>(null);
+  const [forecastData, setForecastData] = useState<DailyForecast[] | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,6 +55,22 @@ function App() {
 
         const resData: WeatherData = await response.json();
         setData(resData);
+
+        const forecastResponse = await fetch(
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&units=metric&appid=${API_KEY}`
+        );
+        if (!forecastResponse.ok) {
+          const errorText = await forecastResponse.text();
+          console.error(
+            'Forecast API response:',
+            forecastResponse.status,
+            errorText
+          );
+          throw new Error('Failed to fetch forecast data');
+        }
+
+        const forecastData = await forecastResponse.json();
+        setForecastData(processForecastData(forecastData.list));
         setLoading(false);
       } catch (err) {
         setError((err as Error).message);
@@ -75,6 +94,22 @@ function App() {
 
       const resData: WeatherData = await response.json();
       setData(resData);
+
+      const forecastResponse = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${resData.coord.lat}&lon=${resData.coord.lon}&units=metric&appid=${API_KEY}`
+      );
+      if (!forecastResponse.ok) {
+        const errorText = await forecastResponse.text();
+        console.error(
+          'Forecast API response:',
+          forecastResponse.status,
+          errorText
+        );
+        throw new Error('Failed to fetch forecast data');
+      }
+
+      const forecastData = await forecastResponse.json();
+      setForecastData(processForecastData(forecastData.list));
       setLoading(false);
     } catch (err) {
       setError((err as Error).message);
@@ -82,50 +117,32 @@ function App() {
     }
   };
 
-  const forecastData = [
-    {
-      day: 'Friday',
-      temperature: 22,
-      description: 'Cloudy',
-      icon: 'http://openweathermap.org/img/wn/04d@2x.png',
-    },
-    {
-      day: 'Saturday',
-      temperature: 25,
-      description: 'Sunny',
-      icon: 'http://openweathermap.org/img/wn/01d@2x.png',
-    },
-    {
-      day: 'Sunday',
-      temperature: 28,
-      description: 'Partly Cloudy',
-      icon: 'http://openweathermap.org/img/wn/03d@2x.png',
-    },
-    {
-      day: 'Monday',
-      temperature: 29,
-      description: 'Rain',
-      icon: 'http://openweathermap.org/img/wn/10d@2x.png',
-    },
-    {
-      day: 'Tuesday',
-      temperature: 27,
-      description: 'Sunny',
-      icon: 'http://openweathermap.org/img/wn/01d@2x.png',
-    },
-    {
-      day: 'Wednesday',
-      temperature: 26,
-      description: 'Cloudy',
-      icon: 'http://openweathermap.org/img/wn/04d@2x.png',
-    },
-    {
-      day: 'Thursday',
-      temperature: 24,
-      description: 'Rain',
-      icon: 'http://openweathermap.org/img/wn/10d@2x.png',
-    },
-  ];
+  const processForecastData = (data: ForecastData[]): DailyForecast[] => {
+    const dailyData: { [date: string]: DailyForecast } = {};
+
+    data.forEach((entry) => {
+      const date = new Date(entry.dt * 1000).toISOString().split('T')[0];
+      if (!dailyData[date]) {
+        dailyData[date] = {
+          date,
+          minTemp: entry.main.temp_min,
+          maxTemp: entry.main.temp_max,
+          weather: entry.weather,
+        };
+      } else {
+        dailyData[date].minTemp = Math.min(
+          dailyData[date].minTemp,
+          entry.main.temp_min
+        );
+        dailyData[date].maxTemp = Math.max(
+          dailyData[date].maxTemp,
+          entry.main.temp_max
+        );
+      }
+    });
+
+    return Object.values(dailyData);
+  };
 
   const weatherDetails = {
     windSpeed: data?.wind.speed,
@@ -168,11 +185,18 @@ function App() {
       )}
       {!loading && !error && data && (
         <div className='flex flex-col items-center justify-center p-8'>
+          <h1 className='text-xl font-bold'>
+            {new Date().toLocaleDateString(undefined, {
+              weekday: 'long',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </h1>
           <div className='flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-2 w-[90vw] sm:w-[80vw] p-8 border-b-2 border-black border-opacity-20'>
             {data && <CurrentWeather data={data} />}
             {data && <WeatherDetails details={weatherDetails} />}
           </div>
-          <Forecast forecast={forecastData} />
+          {forecastData && <Forecast forecast={forecastData} />}
         </div>
       )}
     </div>
