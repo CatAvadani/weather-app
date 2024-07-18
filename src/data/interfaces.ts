@@ -64,3 +64,10 @@ export interface DailyForecast {
   maxTemp: number;
   weather: Weather[];
 }
+
+export interface WeatherDetailsProps {
+  windSpeed: number | undefined;
+  humidity: number | undefined;
+  pressure: number | undefined;
+  precipitation: number | undefined;
+}
