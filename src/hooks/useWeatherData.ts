@@ -4,7 +4,10 @@ import { processForecastData } from '../utils/processData';
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-export const useWeatherData = (coords: { lat: number; lon: number } | null) => {
+export const useWeatherData = (
+  coords: { lat: number; lon: number } | null,
+  unit: 'metric' | 'imperial'
+) => {
   const [data, setData] = useState<WeatherData | null>(null);
   const [forecastData, setForecastData] = useState<DailyForecast[] | null>(
     null
@@ -20,7 +23,7 @@ export const useWeatherData = (coords: { lat: number; lon: number } | null) => {
       setError(null);
       try {
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&units=metric&appid=${API_KEY}`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&units=${unit}&appid=${API_KEY}`
         );
         if (!response.ok) {
           throw new Error('Failed to fetch weather data');
@@ -30,7 +33,7 @@ export const useWeatherData = (coords: { lat: number; lon: number } | null) => {
         setData(resData);
 
         const forecastResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&units=metric&appid=${API_KEY}`
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&units=${unit}&appid=${API_KEY}`
         );
         if (!forecastResponse.ok) {
           const errorText = await forecastResponse.text();
@@ -52,7 +55,7 @@ export const useWeatherData = (coords: { lat: number; lon: number } | null) => {
     };
 
     getWeatherData();
-  }, [coords]);
+  }, [coords, unit]);
 
   return { data, forecastData, loading, error };
 };
