@@ -10,16 +10,19 @@ const CurrentWeather = ({ data, unit }: CurrentWeatherProps) => {
   const temperatureUnit = unit === 'metric' ? '°C' : '°F';
 
   return (
-    <div className='flex flex-col items-end justify-center bg-black bg-opacity-10 rounded-l-full p-16 pr-8 shadow-lg w-1/2 h-52'>
-      <div className='text-5xl font-semibold text-yellow-400'>
-        {Math.round(data.main.temp)}
-        {temperatureUnit}
+    <div className='flex flex-col items-center sm:items-end sm:justify-center sm:bg-black sm:bg-opacity-10 sm:rounded-l-full  p-8 sm:p-16 sm:pr-8 sm:shadow-lg w-full sm:w-1/2 sm:h-52 m-auto'>
+      <div className=' flex lg:flex-col items-end'>
+        <div className=' text-3xl lg:text-5xl font-semibold text-yellow-400'>
+          {Math.round(data.main.temp)}
+          {temperatureUnit}
+        </div>
+        <img
+          src={weatherIconUrl}
+          alt={data.weather[0].description}
+          className='w-10 h-10'
+        />
       </div>
-      <img
-        src={weatherIconUrl}
-        alt={data.weather[0].description}
-        className='w-10 h-10'
-      />
+
       <div className='text-xl capitalize text-yellow-200'>
         {data.weather[0].description}
       </div>

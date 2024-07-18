@@ -69,13 +69,13 @@ function App() {
       className='min-h-screen bg-cover bg-center text-white'
       style={{ backgroundImage: `url('/app-background.jpg')` }}
     >
-      <nav className='sm:flex h-6 w-[90vw] justify-between items-center mx-auto mb-52 sm:mb-8 pt-10'>
-        <div className='flex justify-center items-center p-4 gap-4'>
-          <h1 className='text-center text-lg sm:text-2xl font-bold p-4'>
+      <nav className='flex flex-col lg:flex-row h-6 w-[90vw] justify-between items-center mx-auto mb-40 lg:mb-20 pt-10'>
+        <div className='flex  justify-center items-center p-4 gap-4'>
+          <h1 className='text-center text-sm sm:text-2xl font-bold p-2'>
             Weather Watch
           </h1>
           <MapPinIcon className='w-6 h-6 text-yellow-500' />
-          <h1 className='text-lg sm:text-xl p-4 text-stone-300'>
+          <h1 className='text-sm sm:text-xl p-2 text-stone-300'>
             Weather in{' '}
             <span className='sm:font-bold text-white'>
               {' '}
@@ -84,7 +84,7 @@ function App() {
           </h1>
           <div className='flex items-center'>
             <button
-              className={`p-3  ${
+              className={`p-2  ${
                 unit === 'metric' ? 'text-yellow-500' : ' text-stone-300'
               }`}
               onClick={() => setUnit('metric')}
@@ -93,7 +93,7 @@ function App() {
             </button>
             <span className='mx-2'>|</span>
             <button
-              className={` p-3 ${
+              className={` p-2 ${
                 unit === 'imperial' ? 'text-yellow-500' : ' text-stone-300'
               }`}
               onClick={() => setUnit('imperial')}
@@ -117,7 +117,7 @@ function App() {
       ) : (
         <div className='flex flex-col items-center justify-center p-8'>
           <h1 className='text-xl font-bold'>{currentDate}</h1>
-          <div className='flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-2 w-[90vw] sm:w-[80vw] p-8 border-b-2 border-black border-opacity-20'>
+          <div className='flex flex-col sm:flex-row items-center justify-center w-[90vw] lg:w-[80vw] gap-4 p-8 border-b-2 border-black border-opacity-20'>
             {data && <CurrentWeather data={data} unit={unit} />}
             {data && <WeatherDetails details={weatherDetails} />}
           </div>
