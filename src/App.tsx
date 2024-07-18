@@ -15,7 +15,7 @@ function App() {
     null
   );
   const { data, forecastData, loading, error } = useWeatherData(coords);
-  const [setSearchLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
     if (navigator.geolocation) {
