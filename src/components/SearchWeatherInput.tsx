@@ -14,7 +14,7 @@ export default function SearchWeatherInput({ onSearch }: SearchWeatherProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='flex justify-center items-center '>
+    <form onSubmit={handleSubmit} className='flex justify-center items-center'>
       <input
         type='text'
         value={query}
@@ -24,9 +24,9 @@ export default function SearchWeatherInput({ onSearch }: SearchWeatherProps) {
       />
       <button
         type='submit'
-        className='py-2 px-2 sm:px-6 bg-yellow-500 text-white rounded-r-full'
+        className='p-2 sm:px-6 bg-yellow-500 text-white rounded-r-full'
       >
-        Get Weather
+        Search
       </button>
     </form>
   );
