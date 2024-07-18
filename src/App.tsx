@@ -14,7 +14,9 @@ function App() {
   const [coords, setCoords] = useState<{ lat: number; lon: number } | null>(
     null
   );
-  const { data, forecastData, loading, error } = useWeatherData(coords);
+  const [unit, setUnit] = useState<'metric' | 'imperial'>('metric');
+  const { data, forecastData, loading, error } = useWeatherData(coords, unit);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -37,9 +39,10 @@ function App() {
   }, []);
 
   const handleSearch = async (query: string) => {
+    setSearchLoading(true);
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=${unit}&appid=${API_KEY}`
       );
       if (!response.ok) {
         throw new Error('Failed to fetch weather data');
@@ -47,8 +50,10 @@ function App() {
 
       const resData: WeatherData = await response.json();
       setCoords({ lat: resData.coord.lat, lon: resData.coord.lon });
+      setSearchLoading(false);
     } catch (err) {
       console.error((err as Error).message);
+      setSearchLoading(false);
     }
   };
 
@@ -65,7 +70,7 @@ function App() {
       style={{ backgroundImage: `url('/app-background.jpg')` }}
     >
       <nav className='sm:flex h-6 w-[90vw] justify-between items-center mx-auto mb-52 sm:mb-8 pt-10'>
-        <div className='flex justify-center items-center p-4'>
+        <div className='flex justify-center items-center p-4 gap-4'>
           <h1 className='text-center text-lg sm:text-2xl font-bold p-4'>
             Weather Watch
           </h1>
@@ -77,28 +82,46 @@ function App() {
               {data?.name}, {data?.sys.country}
             </span>
           </h1>
+          <div className='flex items-center'>
+            <button
+              className={`p-3  ${
+                unit === 'metric' ? 'text-yellow-500' : ' text-stone-300'
+              }`}
+              onClick={() => setUnit('metric')}
+            >
+              °C
+            </button>
+            <span className='mx-2'>|</span>
+            <button
+              className={` p-3 ${
+                unit === 'imperial' ? 'text-yellow-500' : ' text-stone-300'
+              }`}
+              onClick={() => setUnit('imperial')}
+            >
+              °F
+            </button>
+          </div>
         </div>
+
         <SearchWeatherInput onSearch={handleSearch} />
       </nav>
 
-      {loading && (
+      {loading || searchLoading ? (
         <div className='flex justify-center items-center'>
           <p>Loading...</p>
         </div>
-      )}
-      {error && (
+      ) : error ? (
         <div className='flex justify-center items-center'>
           <p>Error: {error}</p>
         </div>
-      )}
-      {!loading && !error && data && (
+      ) : (
         <div className='flex flex-col items-center justify-center p-8'>
           <h1 className='text-xl font-bold'>{currentDate}</h1>
           <div className='flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-2 w-[90vw] sm:w-[80vw] p-8 border-b-2 border-black border-opacity-20'>
-            {data && <CurrentWeather data={data} />}
+            {data && <CurrentWeather data={data} unit={unit} />}
             {data && <WeatherDetails details={weatherDetails} />}
           </div>
-          {forecastData && <Forecast forecast={forecastData} />}
+          {forecastData && <Forecast forecast={forecastData} unit={unit} />}
         </div>
       )}
     </div>

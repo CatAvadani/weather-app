@@ -1,6 +1,12 @@
 import { DailyForecast } from '../data/interfaces';
 
-const Forecast = ({ forecast }: { forecast: DailyForecast[] }) => {
+interface ForecastProps {
+  forecast: DailyForecast[];
+  unit: 'metric' | 'imperial';
+}
+
+const Forecast = ({ forecast, unit }: ForecastProps) => {
+  const temperatureUnit = unit === 'metric' ? '°C' : '°F';
   return (
     <div className='grid grid-cols-6 gap-4 mt-8'>
       {forecast.map((day, index) => {
@@ -22,8 +28,14 @@ const Forecast = ({ forecast }: { forecast: DailyForecast[] }) => {
               alt={day.weather[0].description}
               className='w-12 h-12'
             />
-            <div className='text-md'>Min: {Math.round(day.minTemp)}°C</div>
-            <div className='text-md'>Max: {Math.round(day.maxTemp)}°C</div>
+            <div className='text-md'>
+              Min: {Math.round(day.minTemp)}
+              {temperatureUnit}
+            </div>
+            <div className='text-md'>
+              Max: {Math.round(day.maxTemp)}
+              {temperatureUnit}
+            </div>
             <div className='text-md capitalize mt-4 text-stone-400'>
               {day.weather[0].description}
             </div>
