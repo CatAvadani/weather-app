@@ -1,4 +1,6 @@
-const WeatherDetails = ({ details }: { details: any }) => {
+import { WeatherDetailsProps } from '../data/interfaces';
+
+const WeatherDetails = ({ details }: { details: WeatherDetailsProps }) => {
   return (
     <div className='flex flex-col items-left p-4 justify-center bg-black bg-opacity-10 rounded-r-full shadow-lg w-1/2 h-52 pl-8'>
       <h1 className=' font-bold mb-4'>Weather Details</h1>
