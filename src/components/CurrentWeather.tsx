@@ -10,7 +10,7 @@ const CurrentWeather = ({ data, unit }: CurrentWeatherProps) => {
   const temperatureUnit = unit === 'metric' ? '°C' : '°F';
 
   return (
-    <div className='flex flex-col items-center sm:items-end sm:justify-center bg-black bg-opacity-10 sm:rounded-l-full  p-8 sm:p-16 sm:pr-8 shadow-lg w-full sm:w-1/2 sm:h-52 m-auto'>
+    <div className='flex flex-col items-center sm:items-end sm:justify-center sm:bg-black sm:bg-opacity-10 sm:rounded-l-full  p-8 sm:p-16 sm:pr-8 sm:shadow-lg w-full sm:w-1/2 sm:h-52 m-auto'>
       <div className=' flex lg:flex-col items-end'>
         <div className=' text-3xl lg:text-5xl font-semibold text-yellow-400'>
           {Math.round(data.main.temp)}

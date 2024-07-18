@@ -8,7 +8,7 @@ interface ForecastProps {
 const Forecast = ({ forecast, unit }: ForecastProps) => {
   const temperatureUnit = unit === 'metric' ? '°C' : '°F';
   return (
-    <div className='grid grid-cols-6 gap-4 mt-8'>
+    <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mt-8'>
       {forecast.map((day, index) => {
         const date = new Date(day.date).toLocaleDateString(undefined, {
           weekday: 'long',
@@ -20,9 +20,9 @@ const Forecast = ({ forecast, unit }: ForecastProps) => {
         return (
           <div
             key={index}
-            className='flex flex-col items-center bg-black bg-opacity-30 rounded-lg p-4 shadow-lg'
+            className='flex flex-col lg:items-center bg-black bg-opacity-30 rounded-lg p-4 shadow-lg'
           >
-            <div className='text-lg font-bold'>{date}</div>
+            <div className='sm:text-lg font-bold'>{date}</div>
             <img
               src={iconUrl}
               alt={day.weather[0].description}
