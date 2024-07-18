@@ -15,7 +15,6 @@ function App() {
     null
   );
   const { data, forecastData, loading, error } = useWeatherData(coords);
-  const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -38,7 +37,6 @@ function App() {
   }, []);
 
   const handleSearch = async (query: string) => {
-    setSearchLoading(true);
     try {
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${API_KEY}`
@@ -49,10 +47,8 @@ function App() {
 
       const resData: WeatherData = await response.json();
       setCoords({ lat: resData.coord.lat, lon: resData.coord.lon });
-      setSearchLoading(false);
     } catch (err) {
       console.error((err as Error).message);
-      setSearchLoading(false);
     }
   };
 
