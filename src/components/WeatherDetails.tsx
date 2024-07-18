@@ -7,7 +7,7 @@ const WeatherDetails = ({ details }: { details: WeatherDetailsProps }) => {
       <p>Wind speed: {details.windSpeed} m/s</p>
       <p>Air humidity: {details.humidity}%</p>
       <p>Pressure: {details.pressure} hPa</p>
-      <p>Precipitation probability: {details.precipitation}%</p>
+      <p>Precipitation: {details.precipitation}%</p>
     </div>
   );
 };
